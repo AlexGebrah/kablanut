@@ -20,7 +20,7 @@ export const Login = () => {
         (state: RootState) => state.auth,
     )
     useEffect(() => {
-        // Clear any existing errors when the component mounts
+        // Clear any existing errors when component mounts
         dispatch(clearError())
     }, [dispatch])
     useEffect(() => {
@@ -124,7 +124,7 @@ export const Login = () => {
                     <span className="bg-gray-900 px-3 text-sm text-gray-400">или</span>
                     <div className="border-t border-gray-600 w-full"></div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                     <button
                         type="button"
                         onClick={handleGoogleLogin}
@@ -170,3 +170,4 @@ export const Login = () => {
         </AuthLayout>
     )
 }
+
