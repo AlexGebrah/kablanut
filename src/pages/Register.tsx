@@ -23,7 +23,7 @@ export const Register = () => {
         (state: RootState) => state.auth,
     )
     useEffect(() => {
-        // Clear any existing errors when component mounts
+        // Clear any existing errors when the component mounts
         dispatch(clearError())
     }, [dispatch])
     useEffect(() => {
