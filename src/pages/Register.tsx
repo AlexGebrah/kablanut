@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { AuthLayout } from '../components/AuthLayout.tsx'
-import { registerUser, clearError } from '../../redux/slices/authSlice.ts'
-import type {RootState} from '../../redux/types.ts'
-import type { AppDispatch } from '../../redux/store.ts'
+import { AuthLayout } from '../authorization/components/AuthLayout.tsx'
+import { registerUser, clearError } from '../redux/slices/authSlice.ts'
+import type {RootState} from '../redux/types.ts'
+import type { AppDispatch } from '../redux/store.ts'
 export const Register = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')

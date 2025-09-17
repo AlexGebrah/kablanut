@@ -23,7 +23,9 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
                     <h1 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-1 sm:mb-2">
                         {title}
                     </h1>
-                    <p className="text-white text-base sm:text-lg">{subtitle}</p>
+                    {subtitle && (
+                        <p className="text-white text-base sm:text-lg">{subtitle}</p>
+                    )}
                 </div>
                 {children}
                 <div className="mt-4 sm:mt-6 text-center">

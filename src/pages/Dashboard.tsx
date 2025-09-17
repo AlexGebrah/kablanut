@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../../redux/slices/authSlice.ts'
-import type {RootState} from '../../redux/types.ts'
+import { logout } from '../redux/slices/authSlice.ts'
+import type {RootState} from '../redux/types.ts'
 export const Dashboard = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
