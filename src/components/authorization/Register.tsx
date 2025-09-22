@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { AuthLayout } from './AuthLayout.tsx'
+import { AuthLayout } from '../AuthLayout.tsx'
 import {
     registerUser,
     loginWithGoogle,
