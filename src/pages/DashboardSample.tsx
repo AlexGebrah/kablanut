@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/slices/authSlice'
 import type {RootState} from '../redux/types'
-export const Dashboard = () => {
+export const DashboardSample = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { user } = useSelector((state: RootState) => state.auth)
