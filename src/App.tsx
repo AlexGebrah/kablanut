@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
-import { Login } from './pages/Login.tsx'
-import { Register } from './pages/Register.tsx'
-import { DashboardCustomer } from './pages/DashboardCustomer.tsx'
+import { Login } from './components/authorization/Login.tsx'
+import { Register } from './components/authorization/Register.tsx'
+import { DashboardCustomer } from './components/dashboards/DashboardCustomer.tsx'
 export function App() {
     return (
         <Provider store={store}>
