@@ -1,7 +1,16 @@
 import type { ProjectAddress } from "./TypeAddress";
 import type { SpecificationItem } from "./TypeSpecificationItem";
+import {
+    PROJECT_KIND_HPL,
+    PROJECT_KIND_ALUMINIUM,
+    PROJECT_KIND_BALCON,
+} from "../../constants/TypeConstants.ts";
 
-export type ProjectKind = 'HPL' | 'Аллюминий' | 'Балкон';
+// Берём типы из значений констант
+export type ProjectKind =
+    | typeof PROJECT_KIND_HPL
+    | typeof PROJECT_KIND_ALUMINIUM
+    | typeof PROJECT_KIND_BALCON;
 
 export type SpecificationFor<K extends ProjectKind> =
     K extends 'HPL' ? {
@@ -20,7 +29,7 @@ export type SpecificationFor<K extends ProjectKind> =
                 glass: SpecificationItem[];
             } : never;
 
-// ВАЖНО: убираем " = ProjectKind", чтобы не было размывания типов
+
 export type ProjectType<K extends ProjectKind> = {
     id: string;
     projectName: string;
