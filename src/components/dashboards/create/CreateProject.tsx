@@ -2,29 +2,18 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
+import type {ProjectType} from "../../typesComponents/ProjectType.ts";
+import {PROJECT_KIND_HPL} from "../../../constants/TypeConstants.ts";
 
-type ProjectForm = {
-    id: string
-    projectName: string
-    projectKind: string
-    projectDateStart: string
-    projectDateFinish: string
-    customer: string
-    manufacturer: string
-    kablan: string[]
-    designer: string
-    executor: string[]
-    admin: string
-}
 
 export const CreateProject = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state: RootState) => state.auth)
 
-    const [form, setForm] = useState<ProjectForm>({
+    const [form, setForm] = useState<ProjectType<'HPL'>>({
         id: '20250912oron',
         projectName: 'Oron',
-        projectKind: 'fasade',
+        projectKind: PROJECT_KIND_HPL,
         projectDateStart: '2025-08-12',
         projectDateFinish: '2026-02-21',
         customer: 'Rav Barieh',
@@ -33,6 +22,24 @@ export const CreateProject = () => {
         designer: 'MTM',
         executor: ['Oleg'],
         admin: 'Michael',
+        projectStatus: 'draft', // TODO: сделайте union наподобие 'draft' | 'active' | 'done'
+        projectAddress: {
+            city: "",
+            street: "",
+            house: 1,
+            zip: 1,
+            room: 1,
+        },
+        specificationPlan: {
+            structures: [],
+            panels: [],
+            glif: [],
+        },
+        specificationFact: {
+            structures: [],
+            panels: [],
+            glif: [],
+        },
     })
 
     const update = (path: string, value: unknown) => {
@@ -60,8 +67,6 @@ export const CreateProject = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // eslint-disable-next-line no-console
-        console.log('Create/Update Project payload:', form)
         navigate('/dashboard')
     }
 
