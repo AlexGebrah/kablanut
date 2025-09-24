@@ -1,7 +1,7 @@
 
 export type SpecificationItem = {
-    quantity: string
+    quantity: number,
     unit: string
-    price: string
+    price: number
     currency: string
 }
