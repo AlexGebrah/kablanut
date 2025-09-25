@@ -10,6 +10,7 @@ import CreateProject from "./components/dashboards/create/CreateProject.tsx";
 import ProjectPlanFact from "./components/dashboards/project/ProjectPlanFact.tsx";
 import Materials from "./components/dashboards/materials/MaterialsRequest.tsx";
 import ProblemsRequest from "./components/dashboards/problems/ProblemsRequest.tsx";
+import Reports from "./components/dashboards/reports/Reports.tsx";
 export function App() {
     return (
         <Provider store={store}>
@@ -25,6 +26,7 @@ export function App() {
                     <Route path="/dashboard/project" element={<ProjectPlanFact />} />
                     <Route path="/dashboard/materials" element={<Materials />} />
                     <Route path="/dashboard/alarm" element={<ProblemsRequest />} />
+                    <Route path="/dashboard/report" element={<Reports />} />
                 </Routes>
             </BrowserRouter>
         </Provider>
