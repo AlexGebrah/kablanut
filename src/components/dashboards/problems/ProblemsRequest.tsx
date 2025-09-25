@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import {useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
 
-export const Problems = () => {
+export const ProblemsRequest = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state: RootState) => state.auth)
 
@@ -39,7 +39,7 @@ export const Problems = () => {
                                 <button
                                     type="button"
                                     aria-label="Заявить о проблеме"
-                                    onClick={() => navigate('/dashboard/problems/request')}
+                                    onClick={() => navigate('/dashboard/alarm/request')}
                                     className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl font-bold whitespace-nowrap
                            hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
                                 >
@@ -49,7 +49,7 @@ export const Problems = () => {
                                 <button
                                     type="button"
                                     aria-label="Заявки в обработке"
-                                    onClick={() => navigate('/dashboard/problems/active')}
+                                    onClick={() => navigate('/dashboard/alarm/active')}
                                     className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl font-bold whitespace-nowrap
                            hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
                                 >
@@ -66,4 +66,4 @@ export const Problems = () => {
     )
 }
 
-export default Problems
+export default ProblemsRequest
