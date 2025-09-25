@@ -128,7 +128,7 @@ export const CreateProject = () => {
                                     value={form.projectKind}
                                     onChange={(e) => update('projectKind', e.target.value)}
                                     className="w-full bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                    placeholder="fasade"
+                                    placeholder="HPL"
                                 />
                             </div>
 

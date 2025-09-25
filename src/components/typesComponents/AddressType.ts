@@ -1,4 +1,4 @@
-export type ProjectAddress = {
+export type AddressType = {
     city: string,
     street: string,
     house: string,

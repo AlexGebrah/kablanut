@@ -1,4 +1,4 @@
-import type { ProjectAddress } from "./TypeAddress";
+import type {AddressType} from "./AddressType.ts";
 import type { SpecificationItem } from "./TypeSpecificationItem";
 import {
     PROJECT_KIND_HPL,
@@ -38,7 +38,7 @@ export type ProjectType<K extends ProjectKind> = {
     projectDateFinish: string;
     specificationPlan: SpecificationFor<K>;
     specificationFact: SpecificationFor<K>;
-    projectAddress: ProjectAddress;
+    projectAddress: AddressType;
     projectStatus: string;
     customer: string;
     manufacturer: string;

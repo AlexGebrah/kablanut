@@ -2,32 +2,14 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
+import type {USerType} from "../../typesComponents/UserType.ts";
 
-type UserForm = {
-    id: string
-    fullName: {
-        firstName: string
-        lastName: string
-    }
-    birthDate: string
-    address: {
-        city: string
-        street: string
-        building: number | ''
-    }
-    contacts: {
-        telephone: string
-        mail: string
-    }
-    company: string
-    role: string
-}
 
 export const CreateUser = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state: RootState) => state.auth)
 
-    const [form, setForm] = useState<UserForm>({
+    const [form, setForm] = useState<USerType>({
         id: '100200300',
         fullName: {
             firstName: 'Michael',
@@ -35,9 +17,11 @@ export const CreateUser = () => {
         },
         birthDate: '2000-09-11',
         address: {
-            city: 'Lod',
-            street: 'Bar Kohva',
-            building: 12,
+            city: "Lod",
+            street: "Gerzl",
+            house: "12",
+            room: "1",
+            zip: "123456",
         },
         contacts: {
             telephone: '+972531112233',
@@ -164,11 +148,33 @@ export const CreateUser = () => {
                             <div>
                                 <label className="block text-sm font-medium text-yellow-400 mb-2">Дом</label>
                                 <input
-                                    type="number"
-                                    value={form.address.building}
-                                    onChange={(e) => update('address.building', e.target.value === '' ? '' : Number(e.target.value))}
+                                    type="string"
+                                    value={form.address.house}
+                                    onChange={(e) => update('address.house', e.target.value === '' ? '' : Number(e.target.value))}
                                     className="w-full bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                     placeholder="12"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-yellow-400 mb-2">Дом</label>
+                                <input
+                                    type="string"
+                                    value={form.address.room}
+                                    onChange={(e) => update('address.room', e.target.value === '' ? '' : Number(e.target.value))}
+                                    className="w-full bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                    placeholder="1"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-yellow-400 mb-2">Дом</label>
+                                <input
+                                    type="string"
+                                    value={form.address.zip}
+                                    onChange={(e) => update('address.zip', e.target.value === '' ? '' : Number(e.target.value))}
+                                    className="w-full bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                    placeholder="123456"
                                 />
                             </div>
 
