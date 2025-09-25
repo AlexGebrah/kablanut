@@ -8,6 +8,7 @@ import CreateUserProject from "./components/dashboards/create/CreateUserProject.
 import CreateUser from "./components/dashboards/create/CreateUser.tsx";
 import CreateProject from "./components/dashboards/create/CreateProject.tsx";
 import ProjectPlanFact from "./components/dashboards/project/ProjectPlanFact.tsx";
+import Materials from "./components/dashboards/materials/MaterialsRequest.tsx";
 export function App() {
     return (
         <Provider store={store}>
@@ -21,6 +22,7 @@ export function App() {
                     <Route path="/dashboard/create/user" element={<CreateUser />} />
                     <Route path="/dashboard/create/project" element={<CreateProject />} />
                     <Route path="/dashboard/project" element={<ProjectPlanFact />} />
+                    <Route path="/dashboard/materials" element={<Materials />} />
                 </Routes>
             </BrowserRouter>
         </Provider>
