@@ -14,5 +14,6 @@ export type AlarmType =
         },
         dateCreate: string,
         status: "draft" | "active" | "done",
+        title: "umit" | "no ready" | "no material" | "other",
         description: string,
     }
