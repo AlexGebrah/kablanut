@@ -1,7 +1,7 @@
 import type {AddressType} from "./AddressType.ts";
 
 
-export type USerType = {
+export type UserType = {
     id: string
     fullName: {
         firstName: string
