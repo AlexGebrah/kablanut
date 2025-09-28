@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import type { RootState } from '../../../redux/types.ts'
-import type { MaterialsType, MaterialItem } from '../../typesComponents/MaterialsType'
+import {useNavigate} from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import type {RootState} from '../../../redux/types.ts'
+import type {MaterialsType, MaterialItem} from '../../typesComponents/MaterialsType'
 
 export const MaterialsRequestCreate = () => {
     const navigate = useNavigate()
-    const { user } = useSelector((state: RootState) => state.auth)
+    const {user} = useSelector((state: RootState) => state.auth)
 
     // Генерация ключа хранения драфта в localStorage по id заявки
     const storageKey = useMemo(() => (id: string) => `materialsDraft:${id}`, [])
@@ -14,15 +14,15 @@ export const MaterialsRequestCreate = () => {
     // Начальные данные формы: статус только 'draft'
     const [form, setForm] = useState<MaterialsType>({
         id: 'MRQ-0001',
-        project: { id: '20250912oron' },
+        project: {id: '20250912oron'},
         user: {
             id: user?.id ?? 'current',
             fullName: user?.name
-                ? { firstName: user.name.split(' ')[0] ?? 'User', lastName: user.name.split(' ')[1] ?? '' }
-                : { firstName: 'User', lastName: '' },
+                ? {firstName: user.name.split(' ')[0] ?? 'User', lastName: user.name.split(' ')[1] ?? ''}
+                : {firstName: 'User', lastName: ''},
         } as any,
         items: [
-            { materialName: 'Панель HPL', quantity: 10, unit: 'шт' },
+            {materialName: 'Панель HPL', quantity: 10, unit: 'шт'},
         ],
         dateCreate: new Date().toISOString().slice(0, 10),
         status: 'draft',
@@ -35,7 +35,7 @@ export const MaterialsRequestCreate = () => {
             if (raw) {
                 const parsed = JSON.parse(raw) as MaterialsType
                 // Статус драфта принудительно 'draft'
-                setForm({ ...parsed, status: 'draft' })
+                setForm({...parsed, status: 'draft'})
             }
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -47,7 +47,7 @@ export const MaterialsRequestCreate = () => {
     // Сохранение драфта (ручное, по кнопке)
     const saveDraft = (data: MaterialsType) => {
         try {
-            const draft: MaterialsType = { ...data, status: 'draft' }
+            const draft: MaterialsType = {...data, status: 'draft'}
             localStorage.setItem(storageKey(draft.id), JSON.stringify(draft))
             // eslint-disable-next-line no-console
             console.log('Драфт сохранён:', draft)
@@ -68,12 +68,12 @@ export const MaterialsRequestCreate = () => {
 
     const updateField = (path: string, value: unknown) => {
         setForm(prev => {
-            const next: any = { ...prev }
+            const next: any = {...prev}
             const parts = path.split('.')
             let cursor = next
             for (let i = 0; i < parts.length - 1; i++) {
                 const key = parts[i]
-                cursor[key] = Array.isArray(cursor[key]) ? [...cursor[key]] : { ...cursor[key] }
+                cursor[key] = Array.isArray(cursor[key]) ? [...cursor[key]] : {...cursor[key]}
                 cursor = cursor[key]
             }
             cursor[parts[parts.length - 1]] = value
@@ -84,7 +84,7 @@ export const MaterialsRequestCreate = () => {
     const addItem = () => {
         setForm(prev => ({
             ...prev,
-            items: [...prev.items, { materialName: '', quantity: 0, unit: '' }],
+            items: [...prev.items, {materialName: '', quantity: 0, unit: ''}],
         }))
     }
 
@@ -98,21 +98,21 @@ export const MaterialsRequestCreate = () => {
     const updateItem = <K extends keyof MaterialItem>(index: number, key: K, value: MaterialItem[K]) => {
         setForm(prev => {
             const items = prev.items.slice()
-            items[index] = { ...items[index], [key]: value }
-            return { ...prev, items }
+            items[index] = {...items[index], [key]: value}
+            return {...prev, items}
         })
     }
 
     // Сохранить драфт (остаёмся на странице, статус не меняем)
     const handleSaveDraft = (e?: React.FormEvent) => {
         if (e) e.preventDefault()
-        saveDraft({ ...form, status: 'draft' })
+        saveDraft({...form, status: 'draft'})
     }
 
     // Кнопка "Отправить": меняем статус на 'active', очищаем драфт и уходим
     const handleSend = async () => {
         // Можно добавить валидацию перед отправкой
-        const payload = { ...form, status: 'active' as const }
+        const payload = {...form, status: 'active' as const}
         // eslint-disable-next-line no-console
         console.log('MaterialsRequestCreate sent (status=active):', payload)
         clearDraft(form.id)
@@ -173,7 +173,8 @@ export const MaterialsRequestCreate = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-yellow-400 mb-2">Пользователь ID</label>
+                                <label className="block text-sm font-medium text-yellow-400 mb-2">Пользователь
+                                    ID</label>
                                 <input
                                     type="text"
                                     value={form.user.id}
@@ -198,7 +199,7 @@ export const MaterialsRequestCreate = () => {
                                     <label className="block text-sm font-medium text-yellow-400 mb-2">Фамилия</label>
                                     <input
                                         type="text"
-                                        value ={(form.user.fullName as any)?.lastName ?? ''}
+                                        value={(form.user.fullName as any)?.lastName ?? ''}
                                         onChange={(e) => updateField('user.fullName.lastName', e.target.value)}
                                         className="w-full bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                         placeholder="Ivanov"
@@ -251,7 +252,8 @@ export const MaterialsRequestCreate = () => {
                                         className="grid grid-cols-1 md:grid-cols-12 gap-3 border border-yellow-400/60 rounded-lg p-3"
                                     >
                                         <div className="md:col-span-6">
-                                            <label className="block text-sm font-medium text-yellow-400 mb-1">Материал</label>
+                                            <label
+                                                className="block text-sm font-medium text-yellow-400 mb-1">Материал</label>
                                             <input
                                                 type="text"
                                                 value={it.materialName}
@@ -261,7 +263,8 @@ export const MaterialsRequestCreate = () => {
                                             />
                                         </div>
                                         <div className="md:col-span-3">
-                                            <label className="block text-sm font-medium text-yellow-400 mb-1">Кол-во</label>
+                                            <label
+                                                className="block text-sm font-medium text-yellow-400 mb-1">Кол-во</label>
                                             <input
                                                 type="number"
                                                 value={it.quantity}
@@ -271,7 +274,8 @@ export const MaterialsRequestCreate = () => {
                                             />
                                         </div>
                                         <div className="md:col-span-2">
-                                            <label className="block text-sm font-medium text-yellow-400 mb-1">Ед.</label>
+                                            <label
+                                                className="block text-sm font-medium text-yellow-400 mb-1">Ед.</label>
                                             <input
                                                 type="text"
                                                 value={it.unit}
