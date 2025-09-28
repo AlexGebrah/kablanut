@@ -21,7 +21,7 @@ export const MaterialsRequestCreate = () => {
             fullName: user?.name
                 ? { firstName: user.name.split(' ')[0] ?? 'User', lastName: user.name.split(' ')[1] ?? '' }
                 : { firstName: 'User', lastName: '' },
-        } as any,
+        } as never,
         items: [
             { materialName: 'Панель HPL', quantity: 10, unit: 'шт' },
         ],
