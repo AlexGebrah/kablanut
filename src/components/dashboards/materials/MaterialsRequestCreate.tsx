@@ -11,7 +11,6 @@ export const MaterialsRequestCreate = () => {
     // Генерация ключа хранения драфта в localStorage по id заявки
     const storageKey = useMemo(() => (id: string) => `materialsDraft:${id}`, [])
 
-
     // Начальные данные формы: статус только 'draft'
     const [form, setForm] = useState<MaterialsType>({
         id: 'MRQ-0001',
@@ -21,7 +20,7 @@ export const MaterialsRequestCreate = () => {
             fullName: user?.name
                 ? { firstName: user.name.split(' ')[0] ?? 'User', lastName: user.name.split(' ')[1] ?? '' }
                 : { firstName: 'User', lastName: '' },
-        } as never,
+        } as any,
         items: [
             { materialName: 'Панель HPL', quantity: 10, unit: 'шт' },
         ],
@@ -45,7 +44,6 @@ export const MaterialsRequestCreate = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
     // Сохранение драфта (ручное, по кнопке)
     const saveDraft = (data: MaterialsType) => {
         try {
@@ -59,7 +57,6 @@ export const MaterialsRequestCreate = () => {
         }
     }
 
-
     // Очистка драфта после отправки
     const clearDraft = (id: string) => {
         try {
@@ -68,7 +65,6 @@ export const MaterialsRequestCreate = () => {
             // ignore
         }
     }
-
 
     const updateField = (path: string, value: unknown) => {
         setForm(prev => {
@@ -107,7 +103,6 @@ export const MaterialsRequestCreate = () => {
         })
     }
 
-
     // Сохранить драфт (остаёмся на странице, статус не меняем)
     const handleSaveDraft = (e?: React.FormEvent) => {
         if (e) e.preventDefault()
@@ -124,13 +119,11 @@ export const MaterialsRequestCreate = () => {
         navigate('/dashboard/materials')
     }
 
-
     // Перехватываем submit формы как "сохранить драфт"
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         handleSaveDraft()
     }
-
 
     return (
         <div className="min-h-screen w-full bg-black text-white">
