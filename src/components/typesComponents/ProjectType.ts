@@ -13,16 +13,16 @@ export type ProjectKind =
     | typeof PROJECT_KIND_BALCON;
 
 export type SpecificationFor<K extends ProjectKind> =
-    K extends 'HPL' ? {
+    K extends typeof PROJECT_KIND_HPL ? {
             structures: SpecificationItem[];
             panels: SpecificationItem[];
             glif: SpecificationItem[];
         } :
-        K extends 'Аллюминий' ? {
+        K extends typeof PROJECT_KIND_ALUMINIUM? {
                 panels: SpecificationItem[];
                 glif: SpecificationItem[];
             } :
-            K extends 'Балкон' ? {
+            K extends typeof PROJECT_KIND_BALCON? {
                 pillars: SpecificationItem[];
                 aluminium: SpecificationItem[];
                 ushka: SpecificationItem[];

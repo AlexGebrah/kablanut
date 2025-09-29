@@ -14,6 +14,7 @@ import Reports from "./components/dashboards/reports/Reports.tsx";
 import ReportLastMonth from "./components/dashboards/reports/ReportLastMonth.tsx";
 import MaterialsRequestCreate from "./components/dashboards/materials/MaterialsRequestCreate.tsx";
 import ProblemsRequestCreate from "./components/dashboards/problems/ProblemsRequestCreate.tsx";
+import ProjectPlanCreate from "./components/dashboards/project/ProjectPlanCreate.tsx";
 
 export function App() {
     return (
@@ -34,6 +35,7 @@ export function App() {
                     <Route path="/dashboard/report/last" element={<ReportLastMonth/>}/>
                     <Route path="/dashboard/materials/request" element={<MaterialsRequestCreate/>}/>
                     <Route path="/dashboard/alarm/request" element={<ProblemsRequestCreate/>}/>
+                    <Route path="/dashboard/project/plan" element={<ProjectPlanCreate/>}/>
                 </Routes>
             </BrowserRouter>
         </Provider>
