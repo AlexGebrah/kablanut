@@ -48,7 +48,7 @@ export const ProjectPlanCreate = () => {
     const { user } = useSelector((state: RootState) => state.auth)
 
     // Список активных проектов пользователя (эмуляция, замените на реальные данные/Redux)
-    //TODO
+    //TODO загрузка активных проектов с сервера
     const activeProjects = useMemo<ProjectType<ProjectKind>[]>(() => {
         return [
             {
