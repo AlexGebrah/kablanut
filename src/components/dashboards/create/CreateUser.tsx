@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
-import type {USerType} from "../../typesComponents/UserType.ts";
+import type {UserType} from "../../typesComponents/UserType.ts";
 
 
 export const CreateUser = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state: RootState) => state.auth)
 
-    const [form, setForm] = useState<USerType>({
+    const [form, setForm] = useState<UserType>({
         id: '100200300',
         fullName: {
             firstName: 'Michael',
@@ -246,3 +246,4 @@ export const CreateUser = () => {
 }
 
 export default CreateUser
+

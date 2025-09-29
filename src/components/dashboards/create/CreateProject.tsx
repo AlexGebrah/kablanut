@@ -74,7 +74,6 @@ export const CreateProject = () => {
         navigate('/dashboard/create')
     }
 
-    const handleSaveProject = () => {//TODO функция сохранения проекта в Redux или на сервер}
 
         return (
             <div className="min-h-screen w-full bg-black text-white">
@@ -237,7 +236,6 @@ export const CreateProject = () => {
                             <div className="mt-8 flex flex-col sm:flex-row gap-4">
                                 <button
                                     type="submit"
-                                    onClick={handleSaveProject}
                                     className="w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-xl font-bold hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
                                 >
                                     Сохранить
@@ -256,5 +254,5 @@ export const CreateProject = () => {
             </div>
         )
     }
-}
+
 export default CreateProject

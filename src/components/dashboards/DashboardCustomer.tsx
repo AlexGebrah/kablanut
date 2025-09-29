@@ -88,3 +88,5 @@ export const DashboardCustomer = () => {
         </div>
     )
 }
+
+export default DashboardCustomer

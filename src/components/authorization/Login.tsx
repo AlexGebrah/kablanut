@@ -10,6 +10,7 @@ import {
 } from '../../redux/slices/authSlice.ts'
 import type {RootState} from '../../redux/types.ts'
 import type { AppDispatch } from '../../redux/store.ts'
+
 export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -171,3 +172,4 @@ export const Login = () => {
     )
 }
 
+export default Login
