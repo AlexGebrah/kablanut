@@ -1,16 +1,5 @@
 import type {AddressType} from "./AddressType.ts";
-import type { SpecificationItem } from "./SpecificationType.ts";
-import {
-    PROJECT_KIND_HPL,
-    PROJECT_KIND_ALUMINIUM,
-    PROJECT_KIND_BALCON,
-} from "../../constants/TypeConstants.ts";
-
-// Берём типы из значений констант
-export type ProjectKind =
-    | typeof PROJECT_KIND_HPL
-    | typeof PROJECT_KIND_ALUMINIUM
-    | typeof PROJECT_KIND_BALCON;
+import type { SpecificationType } from "./SpecificationType.ts";
 
 
 export type ProjectType = {
@@ -19,8 +8,8 @@ export type ProjectType = {
     projectKind: string;
     projectDateStart: string;
     projectDateFinish: string;
-    specificationPlan: SpecificationItem[];
-    specificationFact: SpecificationItem[];
+    specificationPlan: SpecificationType[];
+    specificationFact: SpecificationType[];
     projectAddress: AddressType;
     projectStatus: string;
     customer: string;

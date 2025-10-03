@@ -1,5 +1,5 @@
 
-export type SpecificationItem = {
+export type SpecificationType = {
     name: string,
     quantity: number,
     unit: string

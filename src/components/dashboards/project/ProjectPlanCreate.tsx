@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
 import type { ProjectType } from '../../typesComponents/ProjectType'
-import type { SpecificationItem } from '../../typesComponents/SpecificationType'
+import type { SpecificationType } from '../../typesComponents/SpecificationType'
 
 // Локальный тип строки спецификации с наименованием
-type SpecRow = SpecificationItem
+type SpecRow = SpecificationType
 
 const newRow = (): SpecRow => ({
     name: '',
@@ -102,7 +102,7 @@ export const ProjectPlanCreate = () => {
 
     const handleSavePlan = () => {
         // Приводим к типу ProjectType: наименование вводится, но не хранится в SpecificationItem
-        const specificationPlan: SpecificationItem[] = planRows.map(({ ...rest }) => rest)
+        const specificationPlan: SpecificationType[] = planRows.map(({ ...rest }) => rest)
         const payload = {
             projectId: selectedProjectId,
             projectName: selectedProject?.projectName,

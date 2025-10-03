@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
 import type { ProjectKind, ProjectType, SpecificationFor } from '../../typesComponents/ProjectType'
-import type { SpecificationItem } from '../../typesComponents/SpecificationType.ts'
+import type { SpecificationType } from '../../typesComponents/SpecificationType.ts'
 import {
     PROJECT_KIND_ALUMINIUM,
     PROJECT_KIND_BALCON,
@@ -12,7 +12,7 @@ import {
 
 type SpecFactFor<K extends ProjectKind> = SpecificationFor<K>
 
-const newItem = (): SpecificationItem => ({
+const newItem = (): SpecificationType => ({
     quantity: 0,
     unit: '',
     price: 0,
@@ -127,7 +127,7 @@ export const ProjectFactCreate = () => {
     const addRow = (section: string) => {
         setFact(prev => {
             const next: any = { ...(prev as any) }
-            const arr = (next[section] as SpecificationItem[]) ?? []
+            const arr = (next[section] as SpecificationType[]) ?? []
             next[section] = [...arr, newItem()]
             return next
         })
@@ -136,7 +136,7 @@ export const ProjectFactCreate = () => {
     const removeRow = (section: string, idx: number) => {
         setFact(prev => {
             const next: any = { ...(prev as any) }
-            const arr = (next[section] as SpecificationItem[]) ?? []
+            const arr = (next[section] as SpecificationType[]) ?? []
             next[section] = arr.filter((_, i) => i !== idx)
             return next
         })
@@ -145,12 +145,12 @@ export const ProjectFactCreate = () => {
     const updateRow = (
         section: string,
         idx: number,
-        key: keyof SpecificationItem,
+        key: keyof SpecificationType,
         value: string
     ) => {
         setFact(prev => {
             const next: any = { ...(prev as any) }
-            const arr = (next[section] as SpecificationItem[]) ?? []
+            const arr = (next[section] as SpecificationType[]) ?? []
             const parsedVal =
                 key === 'quantity' || key === 'price' ? Number(value) || 0 : value
             const row = { ...arr[idx], [key]: parsedVal }
@@ -204,11 +204,11 @@ export const ProjectFactCreate = () => {
         []
     )
 
-    const sectionTotal = (items?: SpecificationItem[]) =>
+    const sectionTotal = (items?: SpecificationType[]) =>
         (items ?? []).reduce((s, it) => s + (Number(it.quantity) * Number(it.price)), 0)
     const grandTotal = useMemo(() => {
         const f: any = fact
-        return sections.reduce((sum, s) => sum + sectionTotal(f[s.key] as SpecificationItem[]), 0)
+        return sections.reduce((sum, s) => sum + sectionTotal(f[s.key] as SpecificationType[]), 0)
     }, [fact, sections])
 
     return (
@@ -295,7 +295,7 @@ export const ProjectFactCreate = () => {
                         {/* Редактор specificationFact */}
                         <section className="flex flex-col gap-8">
                             {sections.map(sec => {
-                                const items = (fact as Record<string, SpecificationItem[]>)[sec.key] ?? []
+                                const items = (fact as Record<string, SpecificationType[]>)[sec.key] ?? []
                                 const subtotal = sectionTotal(items)
                                 return (
                                     <div key={sec.key} className="border-2 border-yellow-400 rounded-lg overflow-hidden">
