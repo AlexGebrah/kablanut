@@ -1,5 +1,5 @@
 import type {AddressType} from "./AddressType.ts";
-import type { SpecificationItem } from "./SpecificationItemType.ts";
+import type { SpecificationItem } from "./SpecificationType.ts";
 import {
     PROJECT_KIND_HPL,
     PROJECT_KIND_ALUMINIUM,
