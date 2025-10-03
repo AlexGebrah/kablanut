@@ -1,5 +1,5 @@
 import type {AddressType} from "./AddressType.ts";
-import type { SpecificationItem } from "./TypeSpecificationItem";
+import type { SpecificationItem } from "./SpecificationItemType.ts";
 import {
     PROJECT_KIND_HPL,
     PROJECT_KIND_ALUMINIUM,
@@ -12,32 +12,15 @@ export type ProjectKind =
     | typeof PROJECT_KIND_ALUMINIUM
     | typeof PROJECT_KIND_BALCON;
 
-export type SpecificationFor<K extends ProjectKind> =
-    K extends typeof PROJECT_KIND_HPL ? {
-            structures: SpecificationItem[];
-            panels: SpecificationItem[];
-            glif: SpecificationItem[];
-        } :
-        K extends typeof PROJECT_KIND_ALUMINIUM? {
-                panels: SpecificationItem[];
-                glif: SpecificationItem[];
-            } :
-            K extends typeof PROJECT_KIND_BALCON? {
-                pillars: SpecificationItem[];
-                aluminium: SpecificationItem[];
-                ushka: SpecificationItem[];
-                glass: SpecificationItem[];
-            } : never;
 
-
-export type ProjectType<K extends ProjectKind> = {
+export type ProjectType = {
     id: string;
     projectName: string;
-    projectKind: K;
+    projectKind: string;
     projectDateStart: string;
     projectDateFinish: string;
-    specificationPlan: SpecificationFor<K>;
-    specificationFact: SpecificationFor<K>;
+    specificationPlan: SpecificationItem[];
+    specificationFact: SpecificationItem[];
     projectAddress: AddressType;
     projectStatus: string;
     customer: string;

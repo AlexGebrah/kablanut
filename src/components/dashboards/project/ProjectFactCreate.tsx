@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
 import type { ProjectKind, ProjectType, SpecificationFor } from '../../typesComponents/ProjectType'
-import type { SpecificationItem } from '../../typesComponents/TypeSpecificationItem'
+import type { SpecificationItem } from '../../typesComponents/SpecificationItemType.ts'
 import {
     PROJECT_KIND_ALUMINIUM,
     PROJECT_KIND_BALCON,
