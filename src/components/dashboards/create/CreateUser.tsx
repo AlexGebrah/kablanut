@@ -48,12 +48,9 @@ export const CreateUser = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        navigate('/dashboard')
-    }
-
-    const handleCancel = () => {
         navigate('/dashboard/create')
     }
+
 
     return (
         <div className="min-h-screen w-full bg-black text-white">
@@ -230,13 +227,7 @@ export const CreateUser = () => {
                             >
                                 Сохранить
                             </button>
-                            <button
-                                type="button"
-                                onClick={handleCancel}
-                                className="w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-yellow-400 text-black bg-yellow-400 text-xl font-bold hover:bg-yellow-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
-                            >
-                                Отмена
-                            </button>
+
                         </div>
                     </form>
                 </div>
