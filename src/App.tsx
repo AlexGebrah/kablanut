@@ -17,6 +17,7 @@ import ProblemsRequestCreate from "./components/dashboards/problems/ProblemsRequ
 import ProjectPlanCreate from "./components/dashboards/project/ProjectPlanCreate.tsx";
 import ProjectFactCreate from "./components/dashboards/project/ProjectFactCreate.tsx";
 import MaterialsActive from "./components/dashboards/materials/MaterialsActive.tsx";
+import ProblemsActive from "./components/dashboards/problems/ProblemsActive.tsx";
 
 
 export function App() {
@@ -32,15 +33,16 @@ export function App() {
                     <Route path="/dashboard/create/user" element={<CreateUser/>}/>
                     <Route path="/dashboard/create/project" element={<CreateProject/>}/>
                     <Route path="/dashboard/project" element={<ProjectPlanFact/>}/>
-                    <Route path="/dashboard/materials" element={<Materials/>}/>
-                    <Route path="/dashboard/alarm" element={<ProblemsRequest/>}/>
-                    <Route path="/dashboard/report" element={<Reports/>}/>
-                    <Route path="/dashboard/report/last" element={<ReportLastMonth/>}/>
-                    <Route path="/dashboard/materials/request" element={<MaterialsRequestCreate/>}/>
-                    <Route path="/dashboard/alarm/request" element={<ProblemsRequestCreate/>}/>
                     <Route path="/dashboard/project/plan" element={<ProjectPlanCreate/>}/>
                     <Route path="/dashboard/project/fact" element={<ProjectFactCreate/>}/>
+                    <Route path="/dashboard/materials" element={<Materials/>}/>
+                    <Route path="/dashboard/materials/request" element={<MaterialsRequestCreate/>}/>
                     <Route path="/dashboard/materials/active" element={<MaterialsActive/>}/>
+                    <Route path="/dashboard/alarm" element={<ProblemsRequest/>}/>
+                    <Route path="/dashboard/alarm/request" element={<ProblemsRequestCreate/>}/>
+                    <Route path="/dashboard/alarm/active" element={<ProblemsActive/>}/>                    <Route path="/dashboard/report" element={<Reports/>}/>
+                    <Route path="/dashboard/report/last" element={<ReportLastMonth/>}/>
+
                 </Routes>
             </BrowserRouter>
         </Provider>
