@@ -16,6 +16,7 @@ import MaterialsRequestCreate from "./components/dashboards/materials/MaterialsR
 import ProblemsRequestCreate from "./components/dashboards/problems/ProblemsRequestCreate.tsx";
 import ProjectPlanCreate from "./components/dashboards/project/ProjectPlanCreate.tsx";
 import ProjectFactCreate from "./components/dashboards/project/ProjectFactCreate.tsx";
+import MaterialsActive from "./components/dashboards/materials/MaterialsActive.tsx";
 
 
 export function App() {
@@ -39,6 +40,7 @@ export function App() {
                     <Route path="/dashboard/alarm/request" element={<ProblemsRequestCreate/>}/>
                     <Route path="/dashboard/project/plan" element={<ProjectPlanCreate/>}/>
                     <Route path="/dashboard/project/fact" element={<ProjectFactCreate/>}/>
+                    <Route path="/dashboard/materials/active" element={<MaterialsActive/>}/>
                 </Routes>
             </BrowserRouter>
         </Provider>

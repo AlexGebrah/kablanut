@@ -1,4 +1,4 @@
-import type {ProjectKind, ProjectType} from "./ProjectType.ts";
+import type {ProjectType} from "./ProjectType.ts";
 import type {UserType} from "./UserType.ts";
 
 export type MaterialItem = {
@@ -9,7 +9,7 @@ export type MaterialItem = {
 
 export type MaterialsType = {
     id: string,
-    project: { id: ProjectType<ProjectKind>["id"] },
+    project: { id: ProjectType["id"] },
     user: {
         id: UserType["id"],
         fullName: UserType["fullName"],
