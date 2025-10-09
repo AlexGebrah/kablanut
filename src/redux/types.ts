@@ -3,6 +3,7 @@ import type { UserType } from '../components/typesComponents/UserType'
 import type { ProjectType } from '../components/typesComponents/ProjectType'
 import type { MaterialsType } from '../components/typesComponents/MaterialsType'
 import type { AlarmType } from '../components/typesComponents/AlarmType'
+import type { SpecificationType } from '../components/typesComponents/SpecificationType'
 
 export interface User {
     id?: string
@@ -29,10 +30,15 @@ export interface MaterialsRequestState {
 export interface ProblemsRequestState {
     form: AlarmType
 }
+export interface ProjectPlanCreateState {
+    projectId: string
+    rows: SpecificationType[]
+}
 export interface RootState {
     auth: AuthState
     authCreateUser: AuthCreateUserState
     createProject: CreateProjectState
     materialsRequest: MaterialsRequestState
     problemsRequest: ProblemsRequestState
+    projectPlanCreate: ProjectPlanCreateState
 }

@@ -1,73 +1,25 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types'
 import type { SpecificationType } from '../../typesComponents/SpecificationType'
+import { addRow, removeRow, saveToStorage, setProjectId, updateRow } from '../../../redux/slices/projectPlanCreateSlice'
 
 type PlanRow = SpecificationType
 
-const newRow = (): PlanRow => ({
-  name: '',
-  quantity: 0,
-  unit: '',
-  price: 0,
-  currency: 'NIS',
-})
-
-const storageKey = (projectId: string) => `plan:${projectId}`
-
-const loadPlan = (projectId: string): PlanRow[] => {
-  if (!projectId) return [newRow()]
-  try {
-    const raw = localStorage.getItem(storageKey(projectId))
-    if (!raw) return [newRow()]
-    const parsed = JSON.parse(raw) as PlanRow[]
-    if (!Array.isArray(parsed)) return [newRow()]
-    return parsed
-  } catch {
-    return [newRow()]
-  }
-}
-
-const savePlan = (projectId: string, plan: PlanRow[]) => {
-  if (!projectId) return
-  localStorage.setItem(storageKey(projectId), JSON.stringify(plan))
-}
-
 export const ProjectPlanCreate = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.auth)
-
-  // Текущий проект. В качестве ключа хранилища используем введённый ID проекта.
-  const [projectId, setProjectId] = useState<string>('')
-
-  // Редактируемый план ( SpecificationPlan )
-  const [rows, setRows] = useState<PlanRow[]>([newRow()])
-
-  // Обновлять план при смене текущего ID проекта
-  useEffect(() => {
-    setRows(loadPlan(projectId))
-  }, [projectId])
+  const { projectId, rows } = useSelector((state: RootState) => state.projectPlanCreate)
 
   const UNIT_OPTIONS = useMemo(() => ['шт', 'm²', 'пм'], [])
 
   const rowTotal = (r: PlanRow) => Number(r.quantity) * Number(r.price)
   const grandTotal = useMemo(() => rows.reduce((s, r) => s + rowTotal(r), 0), [rows])
 
-  const addRow = () => setRows(prev => [...prev, newRow()])
-  const removeRow = (idx: number) => setRows(prev => prev.filter((_, i) => i !== idx))
-
-  const updateRow = <K extends keyof PlanRow>(idx: number, field: K, value: PlanRow[K]) => {
-    setRows(prev => {
-      const copy = prev.slice()
-      copy[idx] = { ...copy[idx], [field]: value }
-      return copy
-    })
-  }
-
   const handleSave = () => {
-    // Сохраняем введённые поля плана для текущего проекта
-    savePlan(projectId, rows)
+    dispatch(saveToStorage())
     navigate('/dashboard/project')
   }
 
@@ -106,7 +58,7 @@ export const ProjectPlanCreate = () => {
                 id="projectId"
                 type="text"
                 value={projectId}
-                onChange={(e) => setProjectId(e.target.value.trim())}
+                onChange={(e) => dispatch(setProjectId(e.target.value.trim()))}
                 className="w-full sm:w-96 bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Введите ID проекта"
               />
@@ -125,7 +77,7 @@ export const ProjectPlanCreate = () => {
                   </span>
                   <button
                     type="button"
-                    onClick={addRow}
+                    onClick={() => dispatch(addRow())}
                     className="px-3 py-1.5 rounded-md border-2 border-yellow-400 text-yellow-400 bg-black font-semibold hover:bg-yellow-400 hover:text-black transition-colors"
                   >
                     Добавить строку
@@ -152,7 +104,7 @@ export const ProjectPlanCreate = () => {
                     <input
                       type="text"
                       value={row.name}
-                      onChange={(e) => updateRow(idx, 'name', e.target.value)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'name', value: e.target.value }))}
                       className="col-span-3 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="Наименование позиции"
                     />
@@ -161,13 +113,13 @@ export const ProjectPlanCreate = () => {
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={row.quantity}
-                      onChange={(e) => updateRow(idx, 'quantity', Number(e.target.value) || 0)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'quantity', value: (Number(e.target.value) || 0) }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="0"
                     />
                     <select
                       value={row.unit}
-                      onChange={(e) => updateRow(idx, 'unit', e.target.value)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'unit', value: e.target.value }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       aria-label="Единица измерения"
                     >
@@ -181,14 +133,14 @@ export const ProjectPlanCreate = () => {
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={row.price}
-                      onChange={(e) => updateRow(idx, 'price', Number(e.target.value) || 0)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'price', value: (Number(e.target.value) || 0) }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="0"
                     />
                     <input
                       type="text"
                       value={row.currency}
-                      onChange={(e) => updateRow(idx, 'currency', e.target.value)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'currency', value: e.target.value }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="NIS"
                     />
@@ -198,7 +150,7 @@ export const ProjectPlanCreate = () => {
                       </span>
                       <button
                         type="button"
-                        onClick={() => removeRow(idx)}
+                        onClick={() => dispatch(removeRow(idx))}
                         className="px-3 py-2 rounded-lg border-2 border-yellow-400 text-black bg-yellow-400 font-semibold hover:bg-yellow-300 transition-colors"
                         aria-label={`Удалить строку ${idx + 1}`}
                         title="Удалить"
