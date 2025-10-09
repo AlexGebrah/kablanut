@@ -61,7 +61,7 @@ const projectPlanCreateSlice = createSlice({
       state.rows = state.rows.filter((_, i) => i !== action.payload)
     },
     updateRow<K extends keyof SpecificationType>(
-      state,
+      state: { index?: number; field?: "name" | "quantity" | "unit" | "price" | "currency"; value?: string | number; rows?: any },
       action: PayloadAction<{ index: number; field: K; value: SpecificationType[K] }>
     ) {
       const { index, field, value } = action.payload

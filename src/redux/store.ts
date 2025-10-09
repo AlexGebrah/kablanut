@@ -5,6 +5,7 @@ import createProjectReducer from './slices/createProjectSlice'
 import materialsRequestReducer from './slices/materialsRequestSlice'
 import problemsRequestReducer from './slices/problemsRequestSlice'
 import projectPlanCreateReducer from './slices/projectPlanCreateSlice'
+import projectFactCreateReducer from './slices/projectFactCreateSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         materialsRequest: materialsRequestReducer,
         problemsRequest: problemsRequestReducer,
         projectPlanCreate: projectPlanCreateReducer,
+        projectFactCreate: projectFactCreateReducer,
     },
 })
 export type AppDispatch = typeof store.dispatch

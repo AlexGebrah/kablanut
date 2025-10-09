@@ -34,6 +34,12 @@ export interface ProjectPlanCreateState {
     projectId: string
     rows: SpecificationType[]
 }
+export interface ProjectFactCreateState {
+    projectId: string
+    reportDate: string
+    planItems: SpecificationType[]
+    rows: SpecificationType[]
+}
 export interface RootState {
     auth: AuthState
     authCreateUser: AuthCreateUserState
@@ -41,4 +47,5 @@ export interface RootState {
     materialsRequest: MaterialsRequestState
     problemsRequest: ProblemsRequestState
     projectPlanCreate: ProjectPlanCreateState
+    projectFactCreate: ProjectFactCreateState
 }

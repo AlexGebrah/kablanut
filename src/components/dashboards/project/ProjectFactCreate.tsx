@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../../redux/types'
 import type { SpecificationType } from '../../typesComponents/SpecificationType'
+import { addRow, removeRow, saveFactToStorage, selectName, setProjectId, setReportDate, updateRow } from '../../../redux/slices/projectFactCreateSlice'
 
 type FactRow = SpecificationType
 
@@ -48,17 +49,10 @@ const saveFact = (projectId: string, reportDate: string, fact: FactRow[]) => {
 
 export const ProjectFactCreate = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.auth)
 
-  // Идентификатор проекта и дата отчета
-  const [projectId, setProjectId] = useState<string>('')
-  const [reportDate, setReportDate] = useState<string>('')
-
-  // План проекта, чтобы выбрать наименования
-  const [planItems, setPlanItems] = useState<SpecificationType[]>([])
-
-  // Факт по спецификации
-  const [rows, setRows] = useState<FactRow[]>([newRow()])
+  const { projectId, reportDate, planItems, rows } = useSelector((state: RootState) => state.projectFactCreate)
 
   // Перечень наименований из плана
   const nameOptions = useMemo(() => {
@@ -69,19 +63,7 @@ export const ProjectFactCreate = () => {
     return Array.from(set)
   }, [planItems])
 
-  // При смене проекта — подгружаем план, а также пытаемся подгрузить сохранённый факт (если есть дата)
-  useEffect(() => {
-    setPlanItems(loadPlan(projectId))
-  }, [projectId])
-
-  // При выборе даты отчета — пробуем подгрузить сохраненный факт именно на эту дату
-  useEffect(() => {
-    if (!projectId || !reportDate) {
-      setRows([newRow()])
-      return
-    }
-    setRows(loadFact(projectId, reportDate))
-  }, [projectId, reportDate])
+  // Данные плана/факта подгружаются редьюсерами setProjectId/setReportDate
 
   const UNIT_OPTIONS = useMemo(() => ['шт', 'm²', 'пм'], [])
 
@@ -89,38 +71,16 @@ export const ProjectFactCreate = () => {
   const rowTotal = (r: FactRow) => Number(r.quantity) * Number(r.price)
   const grandTotal = useMemo(() => rows.reduce((s, r) => s + rowTotal(r), 0), [rows])
 
-  // Операции со строками
-  const addRow = () => setRows(prev => [...prev, newRow()])
-  const removeRow = (idx: number) => setRows(prev => prev.filter((_, i) => i !== idx))
-
-  const updateRow = <K extends keyof FactRow>(idx: number, field: K, value: FactRow[K]) => {
-    setRows(prev => {
-      const copy = prev.slice()
-      copy[idx] = { ...copy[idx], [field]: value }
-      return copy
-    })
-  }
+  // Операции со строками выполняются через Redux actions
 
   // При выборе наименования — подтягиваем из плана unit/price/currency
   const handleSelectName = (idx: number, name: string) => {
-    const planSample = planItems.find(p => p.name === name)
-    setRows(prev => {
-      const copy = prev.slice()
-      const current = copy[idx] || newRow()
-      copy[idx] = {
-        ...current,
-        name,
-        unit: planSample?.unit ?? current.unit,
-        price: planSample?.price ?? current.price,
-        currency: planSample?.currency ?? current.currency,
-      }
-      return copy
-    })
+    dispatch(selectName({ index: idx, name }))
   }
 
   // Сохранение факта
   const handleSave = () => {
-    saveFact(projectId, reportDate, rows)
+    dispatch(saveFactToStorage())
     navigate('/dashboard/project')
   }
 
@@ -159,7 +119,7 @@ export const ProjectFactCreate = () => {
                 id="projectId"
                 type="text"
                 value={projectId}
-                onChange={(e) => setProjectId(e.target.value.trim())}
+                onChange={(e) => dispatch(setProjectId(e.target.value.trim()))}
                 className="w-full sm:w-96 bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Введите ID проекта"
               />
@@ -175,7 +135,7 @@ export const ProjectFactCreate = () => {
                 id="reportDate"
                 type="date"
                 value={reportDate}
-                onChange={(e) => setReportDate(e.target.value)}
+                onChange={(e) => dispatch(setReportDate(e.target.value))}
                 className="w-full sm:w-72 bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </section>
@@ -190,7 +150,7 @@ export const ProjectFactCreate = () => {
                   </span>
                   <button
                     type="button"
-                    onClick={addRow}
+                    onClick={() => dispatch(addRow())}
                     className="px-3 py-1.5 rounded-md border-2 border-yellow-400 text-yellow-400 bg-black font-semibold hover:bg-yellow-400 hover:text-black transition-colors"
                   >
                     Добавить строку
@@ -234,13 +194,13 @@ export const ProjectFactCreate = () => {
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={row.quantity}
-                      onChange={(e) => updateRow(idx, 'quantity', Number(e.target.value) || 0)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'quantity', value: (Number(e.target.value) || 0) }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="0"
                     />
                     <select
                       value={row.unit}
-                      onChange={(e) => updateRow(idx, 'unit', e.target.value)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'unit', value: e.target.value }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       aria-label="Единица измерения"
                     >
@@ -254,14 +214,14 @@ export const ProjectFactCreate = () => {
                       inputMode="numeric"
                       pattern="[0-9]*"
                       value={row.price}
-                      onChange={(e) => updateRow(idx, 'price', Number(e.target.value) || 0)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'price', value: (Number(e.target.value) || 0) }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="0"
                     />
                     <input
                       type="text"
                       value={row.currency}
-                      onChange={(e) => updateRow(idx, 'currency', e.target.value)}
+                      onChange={(e) => dispatch(updateRow({ index: idx, field: 'currency', value: e.target.value }))}
                       className="col-span-2 bg-black text-white border-2 border-yellow-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                       placeholder="NIS"
                     />
@@ -271,7 +231,7 @@ export const ProjectFactCreate = () => {
                       </span>
                       <button
                         type="button"
-                        onClick={() => removeRow(idx)}
+                        onClick={() => dispatch(removeRow(idx))}
                         className="px-3 py-2 rounded-lg border-2 border-yellow-400 text-black bg-yellow-400 font-semibold hover:bg-yellow-300 transition-colors"
                         aria-label={`Удалить строку ${idx + 1}`}
                         title="Удалить"
