@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
 import type {UserType} from "../../typesComponents/UserType.ts";
-import { createUser } from '../../../redux/slices/authCreateUser'
+import { createUser } from '../../../redux/slices/createUserSlice.ts'
 import type { AppDispatch } from '../../../redux/store'
 
 

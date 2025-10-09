@@ -1,5 +1,6 @@
 // Types for our Redux state
 import type { UserType } from '../components/typesComponents/UserType'
+import type { ProjectType } from '../components/typesComponents/ProjectType'
 
 export interface User {
     id?: string
@@ -17,7 +18,11 @@ export interface AuthCreateUserState {
     loading: boolean
     error: string | null
 }
+export interface CreateProjectState {
+    form: ProjectType
+}
 export interface RootState {
     auth: AuthState
     authCreateUser: AuthCreateUserState
+    createProject: CreateProjectState
 }

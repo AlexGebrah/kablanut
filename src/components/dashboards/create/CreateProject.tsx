@@ -1,62 +1,19 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import type {RootState} from '../../../redux/types.ts'
-import type {ProjectType} from "../../typesComponents/ProjectType.ts";
-import {PROJECT_KIND_HPL} from "../../../constants/TypeConstants.ts";
+import { updateByPath } from '../../../redux/slices/createProjectSlice'
+import type { AppDispatch } from '../../../redux/store'
 
 
 export const CreateProject = () => {
     const navigate = useNavigate()
     const {user} = useSelector((state: RootState) => state.auth)
-
-    const [form, setForm] = useState<ProjectType>({
-        id: '20250912oron',
-        projectName: 'Oron',
-        projectKind: PROJECT_KIND_HPL,
-        projectDateStart: '2025-08-12',
-        projectDateFinish: '2026-02-21',
-        customer: 'Rav Barieh',
-        manufacturer: 'Alucal',
-        kablan: ['Rabinovich'],
-        designer: 'MTM',
-        executor: ['Oleg'],
-        admin: 'Michael',
-        projectStatus: 'draft', // TODO: сделайте union наподобие 'draft' | 'active' | 'done'
-        projectAddress: {
-            city: "",
-            street: "",
-            house: "",
-            zip: "",
-            room: ""
-        },
-        specificationPlan: [{
-            quantity: 400,
-            unit: "м2",
-            price: 50,
-            currency: "NIS"
-        }],
-        specificationFact: [{
-            quantity: 100,
-            unit: "м2",
-            price: 50,
-            currency: "NIS"
-        }],
-    })
+    const dispatch = useDispatch<AppDispatch>()
+    const form = useSelector((state: RootState) => state.createProject.form)
 
     const update = (path: string, value: unknown) => {
-        setForm(prev => {
-            const next: any = {...prev}
-            const parts = path.split('.')
-            let cursor = next
-            for (let i = 0; i < parts.length - 1; i++) {
-                const key = parts[i]
-                cursor[key] = Array.isArray(cursor[key]) ? [...cursor[key]] : {...cursor[key]}
-                cursor = cursor[key]
-            }
-            cursor[parts[parts.length - 1]] = value
-            return next
-        })
+        dispatch(updateByPath({ path, value }))
     }
 
     const toArray = (value: string) =>
@@ -199,7 +156,7 @@ export const CreateProject = () => {
                                 <input
                                     type="text"
                                     value={form.designer}
-                                    onChange={(e) => update('desighner', e.target.value)}
+                                    onChange={(e) => update('designer', e.target.value)}
                                     className="w-full bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                     placeholder="MTM"
                                 />

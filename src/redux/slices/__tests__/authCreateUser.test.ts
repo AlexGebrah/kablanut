@@ -1,4 +1,4 @@
-import reducer, { createUser, clearCreateUserError, resetCreateUser } from '../authCreateUser'
+import reducer, { createUser, clearCreateUserError, resetCreateUser } from '../createUserSlice.ts'
 import type { AuthCreateUserState } from '../../types'
 import type { UserType } from '../../../components/typesComponents/UserType'
 import { describe, it, expect } from 'vitest'
