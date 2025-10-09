@@ -1,32 +1,19 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import type {RootState} from '../../../redux/types.ts'
 import type {MaterialsType, MaterialItem} from '../../typesComponents/MaterialsType'
+import type { AppDispatch } from '../../../redux/store'
+import { setForm as setMaterialsForm, updateByPath as updateMaterialsByPath, addItem as addMaterialsItem, removeItem as removeMaterialsItem, updateItem as updateMaterialsItem } from '../../../redux/slices/materialsRequestSlice'
 
 export const MaterialsRequestCreate = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
     const {user} = useSelector((state: RootState) => state.auth)
+    const form = useSelector((state: RootState) => state.materialsRequest.form)
 
     // Генерация ключа хранения драфта в localStorage по id заявки
     const storageKey = useMemo(() => (id: string) => `materialsDraft:${id}`, [])
-
-    // Начальные данные формы: статус только 'draft'
-    const [form, setForm] = useState<MaterialsType>({
-        id: 'MRQ-0001',
-        project: {id: '20250912oron'},
-        user: {
-            id: user?.id ?? 'current',
-            fullName: user?.name
-                ? {firstName: user.name.split(' ')[0] ?? 'User', lastName: user.name.split(' ')[1] ?? ''}
-                : {firstName: 'User', lastName: ''},
-        } as any,
-        items: [
-            {materialName: 'Панель HPL', quantity: 10, unit: 'шт'},
-        ],
-        dateCreate: new Date().toISOString().slice(0, 10),
-        status: 'draft',
-    })
 
     // Загрузка драфта при монтировании (если есть сохранённый)
     useEffect(() => {
@@ -35,7 +22,13 @@ export const MaterialsRequestCreate = () => {
             if (raw) {
                 const parsed = JSON.parse(raw) as MaterialsType
                 // Статус драфта принудительно 'draft'
-                setForm({...parsed, status: 'draft'})
+                dispatch(setMaterialsForm({ ...parsed, status: 'draft' }))
+            } else if (user) {
+                // Инициализируем пользователя в форме из auth
+                const [first, last] = (user.name ?? 'User').split(' ')
+                dispatch(updateMaterialsByPath({ path: 'user.id', value: user.id ?? 'current' }))
+                dispatch(updateMaterialsByPath({ path: 'user.fullName.firstName', value: first || 'User' }))
+                dispatch(updateMaterialsByPath({ path: 'user.fullName.lastName', value: last || '' }))
             }
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -67,40 +60,19 @@ export const MaterialsRequestCreate = () => {
     }
 
     const updateField = (path: string, value: unknown) => {
-        setForm(prev => {
-            const next: any = {...prev}
-            const parts = path.split('.')
-            let cursor = next
-            for (let i = 0; i < parts.length - 1; i++) {
-                const key = parts[i]
-                cursor[key] = Array.isArray(cursor[key]) ? [...cursor[key]] : {...cursor[key]}
-                cursor = cursor[key]
-            }
-            cursor[parts[parts.length - 1]] = value
-            return next
-        })
+        dispatch(updateMaterialsByPath({ path, value }))
     }
 
     const addItem = () => {
-        setForm(prev => ({
-            ...prev,
-            items: [...prev.items, {materialName: '', quantity: 0, unit: ''}],
-        }))
+        dispatch(addMaterialsItem())
     }
 
     const removeItem = (index: number) => {
-        setForm(prev => ({
-            ...prev,
-            items: prev.items.filter((_, i) => i !== index),
-        }))
+        dispatch(removeMaterialsItem(index))
     }
 
     const updateItem = <K extends keyof MaterialItem>(index: number, key: K, value: MaterialItem[K]) => {
-        setForm(prev => {
-            const items = prev.items.slice()
-            items[index] = {...items[index], [key]: value}
-            return {...prev, items}
-        })
+        dispatch(updateMaterialsItem({ index, key, value }))
     }
 
     // Сохранить драфт (остаёмся на странице, статус не меняем)

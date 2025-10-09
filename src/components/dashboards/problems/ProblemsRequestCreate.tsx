@@ -1,60 +1,19 @@
-import {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import type {RootState} from '../../../redux/types.ts'
 import type {AlarmType} from '../../typesComponents/AlarmType'
-
-// Хелпер обновления по пути "a.b.c"
-const updateByPath = <T extends Record<string, any>>(obj: T, path: string, value: unknown): T => {
-    const parts = path.split('.')
-    const next: any = Array.isArray(obj) ? [...obj] : {...obj}
-    let cursor: any = next
-
-    for (let i = 0; i < parts.length - 1; i++) {
-        const key = parts[i]
-        const current = cursor[key]
-
-        if (current == null || typeof current !== 'object') {
-            // если ветки нет – создаём объект
-            cursor[key] = {}
-        } else {
-            // если есть – делаем поверхностную копию массива/объекта
-            cursor[key] = Array.isArray(current) ? [...current] : {...current}
-        }
-
-        cursor = cursor[key]
-    }
-
-    cursor[parts[parts.length - 1]] = value
-    return next as T
-}
-
+import type { AppDispatch } from '../../../redux/store'
+import { setForm as setProblemsForm, updateByPath as updateProblemsByPath } from '../../../redux/slices/problemsRequestSlice'
 
 export const ProblemsRequestCreate = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
     const {user} = useSelector((state: RootState) => state.auth)
+    const form = useSelector((state: RootState) => state.problemsRequest.form)
 
     // Ключ для localStorage
     const storageKey = useMemo(() => (id: string) => `alarmDraft:${id}`, [])
-
-    // Начальное состояние: статус только 'draft'
-    const [form, setForm] = useState<AlarmType>({
-        id: 'ALM-0001',
-        project: {
-            id: '20250912oron',
-            projectName: 'Oron',
-        },
-        user: {
-            id: user?.id ?? 'current',
-            fullName: user?.name
-                ? {firstName: user.name.split(' ')[0] ?? 'User', lastName: user.name.split(' ')[1] ?? ''}
-                : {firstName: 'User', lastName: ''},
-        } as any,
-        dateCreate: new Date().toISOString().slice(0, 10),
-        status: 'draft',
-        title: 'other',
-        description: '',
-    })
 
     // Загрузка драфта при монтировании
     useEffect(() => {
@@ -62,7 +21,12 @@ export const ProblemsRequestCreate = () => {
             const raw = localStorage.getItem(storageKey(form.id))
             if (raw) {
                 const parsed = JSON.parse(raw) as AlarmType
-                setForm({...parsed, status: 'draft'})
+                dispatch(setProblemsForm({ ...parsed, status: 'draft' }))
+            } else if (user) {
+                const [first, last] = (user.name ?? 'User').split(' ')
+                dispatch(updateProblemsByPath({ path: 'user.id', value: user.id ?? 'current' }))
+                dispatch(updateProblemsByPath({ path: 'user.fullName.firstName', value: first || 'User' }))
+                dispatch(updateProblemsByPath({ path: 'user.fullName.lastName', value: last || '' }))
             }
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -92,7 +56,7 @@ export const ProblemsRequestCreate = () => {
     }
 
     const updateField = (path: string, value: unknown) => {
-        setForm(prev => updateByPath(prev, path, value))
+        dispatch(updateProblemsByPath({ path, value }))
     }
 
 
@@ -108,7 +72,7 @@ export const ProblemsRequestCreate = () => {
         // eslint-disable-next-line no-console
         console.log('Проблема отправлена (status=active):', payload)
         clearDraft(form.id)
-        navigate('/dashboard/problems')
+        navigate('/dashboard/alarm')
     }
 
     const handleSubmit = (e: React.FormEvent) => {
