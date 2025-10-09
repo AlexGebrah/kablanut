@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type {AuthState, User} from '../types';
+
+const BASE_URL = 'http://localhost:8080/kablanut'
+
 // Initial state
 const initialState: AuthState = {
     isAuthenticated: false,
@@ -11,21 +14,29 @@ const initialState: AuthState = {
 export const loginUser = createAsyncThunk(
     'auth/login',
     async (
-        { email }: { email: string; password: string },
+        { email, password }: { email: string; password: string },
         { rejectWithValue },
     ) => {
         try {
-            // In a real app, this would be an API call
-            // For now, we'll simulate a successful login if email contains '@'
-            if (!email.includes('@')) {
-                throw new Error('Неверный email')
+            const res = await fetch(`${BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            })
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                const msg = (data && (data.message || data.error)) || 'Ошибка входа'
+                return rejectWithValue(msg)
             }
-            // Simulate API delay
-            await new Promise((resolve) => setTimeout(resolve, 500))
-            // Return mock user data
-            return { email, name: email.split('@')[0] } as User
+            // Expecting API to return user object (possibly with token). We'll map minimally.
+            const user: User = {
+                id: data.id,
+                name: data.name,
+                email: data.email ?? email,
+            }
+            return user
         } catch (error) {
-            return rejectWithValue((error as Error).message)
+            return rejectWithValue((error as Error).message || 'Ошибка сети')
         }
     },
 )
@@ -34,10 +45,8 @@ export const loginWithGoogle = createAsyncThunk(
     'auth/loginWithGoogle',
     async (_, { rejectWithValue }) => {
         try {
-            // In a real app, this would initiate Google OAuth flow
-            // For now, we'll simulate a successful login
+            // Keeping mock implementation as backend flow may vary
             await new Promise((resolve) => setTimeout(resolve, 800))
-            // Return mock user data for Google login
             return {
                 email: 'user@gmail.com',
                 name: 'Google User',
@@ -54,10 +63,8 @@ export const loginWithApple = createAsyncThunk(
     'auth/loginWithApple',
     async (_, { rejectWithValue }) => {
         try {
-            // In a real app, this would initiate Apple OAuth flow
-            // For now, we'll simulate a successful login
+            // Keeping mock implementation as backend flow may vary
             await new Promise((resolve) => setTimeout(resolve, 800))
-            // Return mock user data for Apple login
             return {
                 email: 'user@icloud.com',
                 name: 'Apple User',
@@ -76,21 +83,29 @@ export const registerUser = createAsyncThunk(
         {
             name,
             email,
+            password,
         }: { name: string; email: string; password: string },
         { rejectWithValue },
     ) => {
         try {
-            // In a real app, this would be an API call
-            // For now, we'll simulate a successful registration if email contains '@'
-            if (!email.includes('@')) {
-                throw new Error('Неверный email')
+            const res = await fetch(`${BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password }),
+            })
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                const msg = (data && (data.message || data.error)) || 'Ошибка регистрации'
+                return rejectWithValue(msg)
             }
-            // Simulate API delay
-            await new Promise((resolve) => setTimeout(resolve, 500))
-            // Return mock user data
-            return { email, name } as User
+            const user: User = {
+                id: data.id,
+                name: data.name ?? name,
+                email: data.email ?? email,
+            }
+            return user
         } catch (error) {
-            return rejectWithValue((error as Error).message)
+            return rejectWithValue((error as Error).message || 'Ошибка сети')
         }
     },
 )

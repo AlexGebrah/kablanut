@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../../redux/types.ts'
 import type {UserType} from "../../typesComponents/UserType.ts";
+import { createUser } from '../../../redux/slices/authCreateUser'
+import type { AppDispatch } from '../../../redux/store'
 
 
 export const CreateUser = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state: RootState) => state.auth)
+    const dispatch = useDispatch<AppDispatch>()
+    const { loading, error} = useSelector((state: RootState) => state.authCreateUser)
 
     const [form, setForm] = useState<UserType>({
         id: '100200300',
@@ -46,9 +50,15 @@ export const CreateUser = () => {
         })
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        navigate('/dashboard/create')
+        try {
+            await dispatch(createUser(form)).unwrap()
+            navigate('/dashboard/create')
+        } catch (err) {
+            // error is handled via redux state
+            console.error('Create user failed', err)
+        }
     }
 
 
@@ -223,11 +233,16 @@ export const CreateUser = () => {
                         <div className="mt-8 flex flex-col sm:flex-row gap-4">
                             <button
                                 type="submit"
-                                className="w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-xl font-bold hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                                disabled={loading}
+                                className={`w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-yellow-400 text-xl font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${loading ? 'opacity-60 cursor-not-allowed bg-black text-yellow-400' : 'bg-black text-yellow-400 hover:bg-yellow-400 hover:text-black'}`}
                             >
-                                Сохранить
+                                {loading ? 'Сохранение...' : 'Сохранить'}
                             </button>
-
+                            {error && (
+                                <div className="text-red-400 mt-3">
+                                    {error}
+                                </div>
+                            )}
                         </div>
                     </form>
                 </div>
