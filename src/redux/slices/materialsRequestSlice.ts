@@ -1,8 +1,33 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { MaterialsType, MaterialItem } from '../../components/typesComponents/MaterialsType'
+import { BASE_URL } from '../../constants/UrlConstants'
+
+// Async thunk to POST materials request to backend
+export const createMaterialsRequest = createAsyncThunk(
+  'materialsRequest/create',
+  async (payload: MaterialsType, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${BASE_URL}/materials`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        const msg = (data && (data.message || data.error)) || 'Ошибка создания заявки на материалы'
+        return rejectWithValue(msg)
+      }
+      return (data && Object.keys(data).length ? data : payload) as MaterialsType
+    } catch (e) {
+      return rejectWithValue((e as Error).message || 'Ошибка сети')
+    }
+  },
+)
 
 export interface MaterialsRequestState {
   form: MaterialsType
+  loading?: boolean
+  error?: string | null
 }
 
 const initialState: MaterialsRequestState = {
@@ -52,7 +77,7 @@ const materialsRequestSlice = createSlice({
       const index = action.payload
       state.form.items = state.form.items.filter((_, i) => i !== index)
     },
-    updateItem<K extends keyof MaterialItem>(state, action: PayloadAction<{ index: number; key: K; value: MaterialItem[K] }>) {
+    updateItem<K extends keyof MaterialItem>(state: { index?: number; key?: keyof MaterialItem; value?: string | number; form?: any }, action: PayloadAction<{ index: number; key: K; value: MaterialItem[K] }>) {
       const { index, key, value } = action.payload
       const items = state.form.items.slice()
       items[index] = { ...items[index], [key]: value } as MaterialItem
@@ -61,6 +86,24 @@ const materialsRequestSlice = createSlice({
     resetForm(state) {
       state.form = initialState.form
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createMaterialsRequest.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(createMaterialsRequest.fulfilled, (state, action) => {
+        state.loading = false
+        // If backend returns created entity, sync form with it
+        if (action.payload) {
+          state.form = action.payload
+        }
+      })
+      .addCase(createMaterialsRequest.rejected, (state, action) => {
+        state.loading = false
+        state.error = (action.payload as string) || action.error.message || 'Ошибка'
+      })
   },
 })
 

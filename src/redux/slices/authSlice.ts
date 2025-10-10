@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type {AuthState, User} from '../types';
+import {BASE_URL} from "../../constants/UrlConstants.ts";
 
-const BASE_URL = 'http://localhost:8080/kablanut'
 
 // Initial state
 const initialState: AuthState = {

@@ -1,8 +1,33 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { AlarmType } from '../../components/typesComponents/AlarmType'
+import { BASE_URL } from '../../constants/UrlConstants'
+
+// Async thunk to POST problem (alarm) request to backend
+export const createProblemRequest = createAsyncThunk(
+  'problemsRequest/create',
+  async (payload: AlarmType, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${BASE_URL}/problems`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        const msg = (data && (data.message || data.error)) || 'Ошибка создания заявки на проблему'
+        return rejectWithValue(msg)
+      }
+      return (data && Object.keys(data).length ? data : payload) as AlarmType
+    } catch (e) {
+      return rejectWithValue((e as Error).message || 'Ошибка сети')
+    }
+  },
+)
 
 export interface ProblemsRequestState {
   form: AlarmType
+  loading?: boolean
+  error?: string | null
 }
 
 const initialState: ProblemsRequestState = {
@@ -18,6 +43,8 @@ const initialState: ProblemsRequestState = {
     title: 'other',
     description: '',
   },
+  loading: false,
+  error: null,
 }
 
 export type UpdateByPathPayload = { path: string; value: unknown }
@@ -46,7 +73,25 @@ const problemsRequestSlice = createSlice({
     },
     resetForm(state) {
       state.form = initialState.form
+      state.error = null
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createProblemRequest.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(createProblemRequest.fulfilled, (state, action) => {
+        state.loading = false
+        if (action.payload) {
+          state.form = action.payload
+        }
+      })
+      .addCase(createProblemRequest.rejected, (state, action) => {
+        state.loading = false
+        state.error = (action.payload as string) || action.error.message || 'Ошибка'
+      })
   },
 })
 

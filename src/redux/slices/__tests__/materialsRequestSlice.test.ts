@@ -1,4 +1,4 @@
-import reducer, { setForm, updateByPath, addItem, removeItem, updateItem, resetForm } from '../materialsRequestSlice'
+import reducer, { setForm, updateByPath, addItem, removeItem, updateItem, resetForm, createMaterialsRequest } from '../materialsRequestSlice'
 import type { MaterialsRequestState } from '../materialsRequestSlice'
 import type { MaterialsType, MaterialItem } from '../../../components/typesComponents/MaterialsType'
 import { describe, it, expect } from 'vitest'
@@ -80,5 +80,27 @@ describe('materialsRequestSlice', () => {
     const next = reducer(prev, updateByPath({ path: 'items', value: replacement }))
     expect(next.form.items).toEqual(replacement)
     expect(prev.form.items).not.toEqual(replacement)
+  })
+
+  it('handles createMaterialsRequest.pending by setting loading and clearing error', () => {
+    const prev = getInitial()
+    const next = reducer(prev, { type: createMaterialsRequest.pending.type })
+    expect(next.loading).toBe(true)
+    expect(next.error).toBeNull()
+  })
+
+  it('handles createMaterialsRequest.fulfilled by stopping loading and syncing form', () => {
+    const prev = getInitial()
+    const payload = makeForm({ id: 'MRQ-SERVER' })
+    const next = reducer(prev, { type: createMaterialsRequest.fulfilled.type, payload })
+    expect(next.loading).toBe(false)
+    expect(next.form.id).toBe('MRQ-SERVER')
+  })
+
+  it('handles createMaterialsRequest.rejected by stopping loading and setting error', () => {
+    const prev = getInitial()
+    const next = reducer(prev, { type: createMaterialsRequest.rejected.type, payload: 'Server error', error: { message: 'X' } })
+    expect(next.loading).toBe(false)
+    expect(next.error).toBe('Server error')
   })
 })

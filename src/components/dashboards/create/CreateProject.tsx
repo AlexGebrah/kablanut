@@ -2,7 +2,7 @@ import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import type {RootState} from '../../../redux/types.ts'
-import { updateByPath } from '../../../redux/slices/createProjectSlice'
+import { updateByPath, createProject } from '../../../redux/slices/createProjectSlice'
 import type { AppDispatch } from '../../../redux/store'
 
 
@@ -24,9 +24,14 @@ export const CreateProject = () => {
 
     const fromArray = (arr: string[]) => arr.join(', ')
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        navigate('/dashboard/create')
+        try {
+            await dispatch(createProject(form)).unwrap()
+            navigate('/dashboard/create')
+        } catch (err) {
+            console.error('Create project failed', err)
+        }
     }
 
 

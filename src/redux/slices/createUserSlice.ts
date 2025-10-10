@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { UserType } from '../../components/typesComponents/UserType'
+import {BASE_URL} from "../../constants/UrlConstants.ts";
 
-const BASE_URL = 'http://localhost:8080/kablanut'
 
 export interface AuthCreateUserState {
   data: UserType | null
@@ -19,7 +19,7 @@ export const createUser = createAsyncThunk(
   'authCreateUser/createUser',
   async (payload: UserType, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${BASE_URL}/users`, {
+      const res = await fetch(`${BASE_URL}/user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

@@ -1,6 +1,31 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { ProjectType } from '../../components/typesComponents/ProjectType'
 import { PROJECT_KIND_HPL } from '../../constants/TypeConstants'
+import {BASE_URL} from "../../constants/UrlConstants.ts";
+
+
+// POST /kablanut/project
+export const createProject = createAsyncThunk(
+  'createProject/create',
+  async (payload: ProjectType, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${BASE_URL}/project`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        const msg = (data && (data.message || data.error)) || 'Ошибка создания проекта'
+        return rejectWithValue(msg)
+      }
+      // If backend returns created project, use it; otherwise echo payload
+      return (data && Object.keys(data).length ? data : payload) as ProjectType
+    } catch (e) {
+      return rejectWithValue((e as Error).message || 'Ошибка сети')
+    }
+  },
+)
 
 export interface CreateProjectState {
   form: ProjectType
