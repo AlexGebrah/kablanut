@@ -14,13 +14,15 @@ export const createProject = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      const data = await res.json().catch(() => ({}))
+      
       if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
         const msg = (data && (data.message || data.error)) || 'Ошибка создания проекта'
         return rejectWithValue(msg)
       }
-      // If backend returns created project, use it; otherwise echo payload
-      return (data && Object.keys(data).length ? data : payload) as ProjectType
+      
+      const data = await res.json()
+      return data as ProjectType
     } catch (e) {
       return rejectWithValue((e as Error).message || 'Ошибка сети')
     }
@@ -28,7 +30,10 @@ export const createProject = createAsyncThunk(
 )
 
 export interface CreateProjectState {
-  form: ProjectType
+    form: ProjectType
+    loading?: boolean
+    error?: string | null
+    
 }
 
 const initialState: CreateProjectState = {
@@ -76,12 +81,14 @@ const initialState: CreateProjectState = {
 // Generic path-based update like "projectAddress.city" or "kablan"
 export type UpdateByPathPayload = { path: string; value: unknown }
 
+const deepClone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj))
+
 const createProjectSlice = createSlice({
   name: 'createProject',
   initialState,
   reducers: {
     setForm(state, action: PayloadAction<ProjectType>) {
-      state.form = action.payload
+      state.form = deepClone(action.payload)
     },
     updateByPath(state, action: PayloadAction<UpdateByPathPayload>) {
       const { path, value } = action.payload
@@ -101,7 +108,8 @@ const createProjectSlice = createSlice({
       cursor[parts[parts.length - 1]] = value as any
     },
     resetForm(state) {
-      state.form = initialState.form
+      state.form = deepClone(initialState.form)
+      state.error = null
     },
   },
 })
