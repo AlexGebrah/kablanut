@@ -7,9 +7,9 @@ import reducer, {
   loadFromStorage,
   saveToStorage,
   reset,
-} from '../projectPlanCreateSlice'
-import type { ProjectPlanCreateState } from '../../types'
-import type { SpecificationType } from '../../../components/typesComponents/SpecificationType'
+} from '../../redux/slices/projectPlanCreateSlice.ts'
+import type { ProjectPlanCreateState } from '../../redux/types.ts'
+import type { SpecificationType } from '../../components/typesComponents/SpecificationType.ts'
 import { describe, it, expect, beforeEach } from 'vitest'
 
 const getInitial = (): ProjectPlanCreateState =>

@@ -9,8 +9,8 @@ import reducer, {
   loadFactFromStorage,
   saveFactToStorage,
   reset,
-} from '../projectFactCreateSlice'
-import type { ProjectFactCreateState } from '../../types'
+} from '../../redux/slices/projectFactCreateSlice.ts'
+import type { ProjectFactCreateState } from '../../redux/types.ts'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 const getInitial = (): ProjectFactCreateState =>

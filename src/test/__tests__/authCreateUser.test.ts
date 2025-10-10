@@ -1,6 +1,6 @@
-import reducer, { createUser, clearCreateUserError, resetCreateUser } from '../createUserSlice.ts'
-import type { AuthCreateUserState } from '../../types'
-import type { UserType } from '../../../components/typesComponents/UserType'
+import reducer, { createUser, clearCreateUserError, resetCreateUser } from '../../redux/slices/createUserSlice.ts'
+import type { AuthCreateUserState } from '../../redux/types.ts'
+import type { UserType } from '../../components/typesComponents/UserType.ts'
 import { describe, it, expect } from 'vitest'
 
 const getInitial = (): AuthCreateUserState => ({

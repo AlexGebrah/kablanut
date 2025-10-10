@@ -1,6 +1,6 @@
-import reducer, { setForm, updateByPath, addItem, removeItem, updateItem, resetForm, createMaterialsRequest } from '../materialsRequestSlice'
-import type { MaterialsRequestState } from '../materialsRequestSlice'
-import type { MaterialsType, MaterialItem } from '../../../components/typesComponents/MaterialsType'
+import reducer, { setForm, updateByPath, addItem, removeItem, updateItem, resetForm, createMaterialsRequest } from '../../redux/slices/materialsRequestSlice.ts'
+import type { MaterialsRequestState } from '../../redux/slices/materialsRequestSlice.ts'
+import type { MaterialsType, MaterialItem } from '../../components/typesComponents/MaterialsType.ts'
 import { describe, it, expect } from 'vitest'
 
 const getInitial = (): MaterialsRequestState => reducer(undefined as unknown as MaterialsRequestState, { type: '@@INIT' })

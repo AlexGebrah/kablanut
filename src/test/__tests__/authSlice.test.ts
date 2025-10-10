@@ -1,5 +1,5 @@
-import reducer, { logout, clearError, loginUser, loginWithGoogle, loginWithApple, registerUser } from '../authSlice'
-import type { AuthState, User } from '../../types'
+import reducer, { logout, clearError, loginUser, loginWithGoogle, loginWithApple, registerUser } from '../../redux/slices/authSlice.ts'
+import type { AuthState, User } from '../../redux/types.ts'
 import { describe, it, expect } from 'vitest'
 
 const getInitial = (): AuthState => ({

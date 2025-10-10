@@ -1,6 +1,6 @@
-import reducer, { setForm, updateByPath, resetForm } from '../createProjectSlice'
-import type { CreateProjectState } from '../../types'
-import type { ProjectType } from '../../../components/typesComponents/ProjectType'
+import reducer, { setForm, updateByPath, resetForm } from '../../redux/slices/createProjectSlice.ts'
+import type { CreateProjectState } from '../../redux/types.ts'
+import type { ProjectType } from '../../components/typesComponents/ProjectType.ts'
 import { describe, it, expect } from 'vitest'
 
 const getInitial = (): CreateProjectState => reducer(undefined as unknown as CreateProjectState, { type: '@@INIT' })

@@ -1,6 +1,6 @@
-import reducer, { setForm, updateByPath, resetForm } from '../problemsRequestSlice'
+import reducer, { setForm, updateByPath, resetForm } from '../../redux/slices/problemsRequestSlice.ts'
 import { describe, it, expect } from 'vitest'
-import type { AlarmType } from '../../../components/typesComponents/AlarmType'
+import type { AlarmType } from '../../components/typesComponents/AlarmType.ts'
 
 const getInitial = () => reducer(undefined as unknown as ReturnType<typeof reducer>, { type: '@@INIT' } as any)
 
