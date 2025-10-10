@@ -38,12 +38,22 @@ export const Create = () => {
                 <div className="flex flex-col gap-9 sm:gap-12">
                     <button
                         type="button"
-                        aria-label="Создать или изменить пользователя"
+                        aria-label="Создать пользователя"
                         onClick={() => navigate('/dashboard/create/user')}
                         className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl font-bold whitespace-nowrap
                            hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
                     >
-                        Создать / изменить Пользователь
+                        Новый Пользователь
+                    </button>
+
+                    <button
+                        type="button"
+                        aria-label="Изменить или удалить пользователя"
+                        onClick={() => navigate('/dashboard/create/user-edit')}
+                        className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl font-bold whitespace-nowrap
+                           hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                    >
+                        Редактировать Пользователя
                     </button>
 
                     <button
@@ -53,7 +63,17 @@ export const Create = () => {
                         className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl font-bold whitespace-nowrap
                            hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
                     >
-                        Создать / Изменить Проект
+                        Новый Проект
+                    </button>
+
+                    <button
+                        type="button"
+                        aria-label="Создать или изменить проект"
+                        onClick={() => navigate('/dashboard/create/project-edit')}
+                        className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl font-bold whitespace-nowrap
+                           hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                    >
+                        Редактировать Проект
                     </button>
                 </div>
 

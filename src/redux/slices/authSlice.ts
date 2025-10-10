@@ -2,6 +2,18 @@ import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/tool
 import type {AuthState, User} from '../types';
 import {BASE_URL} from "../../constants/UrlConstants.ts";
 
+// 🔐 Утилита для безопасных fetch запросов с credentials
+export const secureFetch = async (url: string, options: RequestInit = {}) => {
+    return fetch(url, {
+        ...options,
+        credentials: 'include', // Автоматически отправляет httpOnly cookies
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers,
+        },
+    })
+}
+
 
 // Initial state
 const initialState: AuthState = {

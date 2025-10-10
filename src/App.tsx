@@ -5,8 +5,8 @@ import Login from './components/authorization/Login.tsx'
 import Register from './components/authorization/Register.tsx'
 import DashboardCustomer from './components/dashboards/DashboardCustomer.tsx'
 import CreateUserProject from "./components/dashboards/create/CreateUserProject.tsx";
-import CreateUser from "./components/dashboards/create/CreateUser.tsx";
-import CreateProject from "./components/dashboards/create/CreateProject.tsx";
+import CreateNewUser from "./components/dashboards/create/CreateNewUser.tsx";
+import CreateNewProject from "./components/dashboards/create/CreateNewProject.tsx";
 import ProjectPlanFact from "./components/dashboards/project/ProjectPlanFact.tsx";
 import Materials from "./components/dashboards/materials/MaterialsRequest.tsx";
 import ProblemsRequest from "./components/dashboards/problems/ProblemsRequest.tsx";
@@ -18,6 +18,7 @@ import ProjectPlanCreate from "./components/dashboards/project/ProjectPlanCreate
 import ProjectFactCreate from "./components/dashboards/project/ProjectFactCreate.tsx";
 import MaterialsActive from "./components/dashboards/materials/MaterialsActive.tsx";
 import ProblemsActive from "./components/dashboards/problems/ProblemsActive.tsx";
+import CreateEditUser from "./components/dashboards/create/CreateEditUser.tsx";
 
 
 export function App() {
@@ -32,8 +33,9 @@ export function App() {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/dashboard" element={<DashboardCustomer/>}/>
                     <Route path="/dashboard/create" element={<CreateUserProject/>}/>
-                    <Route path="/dashboard/create/user" element={<CreateUser/>}/>
-                    <Route path="/dashboard/create/project" element={<CreateProject/>}/>
+                    <Route path="/dashboard/create/user" element={<CreateNewUser/>}/>
+                    <Route path="/dashboard/create/user-edit" element={<CreateEditUser/>}/>
+                    <Route path="/dashboard/create/project" element={<CreateNewProject/>}/>
                     <Route path="/dashboard/project" element={<ProjectPlanFact/>}/>
                     <Route path="/dashboard/project/plan" element={<ProjectPlanCreate/>}/>
                     <Route path="/dashboard/project/fact" element={<ProjectFactCreate/>}/>

@@ -17,7 +17,7 @@ export const Login = () => {
     const [rememberMe, setRememberMe] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const { loading, error, isAuthenticated } = useSelector(
+    const { loading, error, isAuthenticated, user } = useSelector(
         (state: RootState) => state.auth,
     )
     useEffect(() => {
@@ -25,11 +25,19 @@ export const Login = () => {
         dispatch(clearError())
     }, [dispatch])
     useEffect(() => {
-        // Redirect if authenticated
+        // When authenticated, persist user and redirect
         if (isAuthenticated) {
+            try {
+                const storage = rememberMe ? localStorage : sessionStorage
+                if (user) {
+                    storage.setItem('user', JSON.stringify(user))
+                }
+            } catch (e) {
+                // ignore storage errors
+            }
             navigate('/dashboard')
         }
-    }, [isAuthenticated, navigate])
+    }, [isAuthenticated, user, rememberMe, navigate])
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         dispatch(

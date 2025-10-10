@@ -17,9 +17,11 @@ export interface AuthState {
     error: string | null
 }
 export interface AuthCreateUserState {
-    data: UserType | null
     loading: boolean
     error: string | null
+    searchedUser: UserType | null
+    searchLoading: boolean
+    searchError: string | null
 }
 export interface CreateProjectState {
     form: ProjectType

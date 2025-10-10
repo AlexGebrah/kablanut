@@ -7,7 +7,7 @@ import { createUser } from '../../../redux/slices/createUserSlice'
 import type { AppDispatch } from '../../../redux/store'
 
 
-export const CreateUser = () => {
+export const CreateNewUser = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch<AppDispatch>()
@@ -251,5 +251,5 @@ export const CreateUser = () => {
     )
 }
 
-export default CreateUser
+export default CreateNewUser
 

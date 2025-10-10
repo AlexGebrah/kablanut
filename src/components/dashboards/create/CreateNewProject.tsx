@@ -6,7 +6,7 @@ import { updateByPath, createProject } from '../../../redux/slices/createProject
 import type { AppDispatch } from '../../../redux/store'
 
 
-export const CreateProject = () => {
+export const CreateNewProject = () => {
     const navigate = useNavigate()
     const {user} = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch<AppDispatch>()
@@ -209,4 +209,4 @@ export const CreateProject = () => {
     )
 }
 
-export default CreateProject
+export default CreateNewProject
