@@ -49,12 +49,15 @@ const initialState: ProblemsRequestState = {
 
 export type UpdateByPathPayload = { path: string; value: unknown }
 
+const deepClone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj))
+
 const problemsRequestSlice = createSlice({
   name: 'problemsRequest',
   initialState,
   reducers: {
     setForm(state, action: PayloadAction<AlarmType>) {
-      state.form = action.payload
+      // assign a cloned form to avoid carrying external object references
+      state.form = deepClone(action.payload)
     },
     updateByPath(state, action: PayloadAction<UpdateByPathPayload>) {
       const { path, value } = action.payload
@@ -72,7 +75,7 @@ const problemsRequestSlice = createSlice({
       cursor[parts[parts.length - 1]] = value as any
     },
     resetForm(state) {
-      state.form = initialState.form
+      state.form = deepClone(initialState.form)
       state.error = null
     },
   },
