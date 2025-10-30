@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../../redux/types.ts'
-import type { UserType } from "../../typesComponents/UserType.ts"
+import type { RootState } from '../../../redux/types'
+import type { UserType } from '../../typesComponents/UserType'
 import { searchUserById, updateUser, deleteUser, clearSearchedUser } from '../../../redux/slices/createUserSlice'
 import type { AppDispatch } from '../../../redux/store'
 
@@ -40,18 +40,30 @@ export const CreateEditUser = () => {
         role: '',
     })
 
-    const update = (path: string, value: string | number | '') => {
+    const update = (path: string, value: unknown) => {
         setForm(prev => {
-            const next: any = { ...prev }
+            // глубокое клонирование для безопасной мутации
+            const next = JSON.parse(JSON.stringify(prev)) as Record<string, unknown>
             const parts = path.split('.')
-            let cursor = next
+            let cursor: Record<string, unknown> = next
+
             for (let i = 0; i < parts.length - 1; i++) {
                 const key = parts[i]
-                cursor[key] = Array.isArray(cursor[key]) ? [...cursor[key]] : { ...cursor[key] }
-                cursor = cursor[key]
+                const current = cursor[key]
+
+                if (Array.isArray(current)) {
+                    cursor[key] = [...(current as unknown[])]
+                } else if (typeof current === 'object' && current !== null) {
+                    cursor[key] = { ...(current as Record<string, unknown>) }
+                } else {
+                    cursor[key] = {}
+                }
+
+                cursor = cursor[key] as Record<string, unknown>
             }
-            cursor[parts[parts.length - 1]] = value
-            return next
+
+            cursor[parts[parts.length - 1]] = value as unknown
+            return next as UserType
         })
     }
 
@@ -95,8 +107,12 @@ export const CreateEditUser = () => {
     const handleDelete = async () => {
         if (!searchedUser) return
 
+        const id = (searchedUser as UserType).id
+        if (!id) return
+
+
         try {
-            await dispatch(deleteUser(searchedUser.id)).unwrap()
+            await dispatch(deleteUser(id)).unwrap()
             setShowDeleteConfirm(false)
             setSearchId('')
             setForm({

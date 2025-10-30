@@ -1,4 +1,3 @@
-// typescript
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -195,7 +194,7 @@ export const CreateEditProject = () => {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="bg-gray-900 border-2 border-yellow-400 rounded-lg p-4 sm:p-6 md:p-8">
+                <div className="bg-gray-900 border-2 border-yellow-400 rounded-lg p-4 sm:p-6 md:p-8" data-testid="create-edit-project">
                     {/* Search Section */}
                     <div className="mb-8 pb-8 border-b border-yellow-400">
                         <form onSubmit={handleSearch} className="w-full max-w-2xl mx-auto">
@@ -210,19 +209,25 @@ export const CreateEditProject = () => {
                                     className="flex-1 bg-black text-white border-2 border-yellow-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                     placeholder="Введите ID проекта"
                                     disabled={searchLoading}
+                                    aria-label="project-id-input"
+                                    data-testid="search-input"
                                 />
                                 <button
                                     type="submit"
                                     disabled={searchLoading || !searchId.trim()}
                                     className="px-6 py-3 rounded-lg border-2 border-yellow-400 text-lg font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 bg-black text-yellow-400 hover:bg-yellow-400 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
+                                    aria-label="search-button"
+                                    data-testid="search-button"
                                 >
                                     {searchLoading ? 'Поиск...' : 'Найти'}
                                 </button>
                                 {searchedProject && (
-                                    <button
+                                <button
                                         type="button"
                                         onClick={handleClearSearch}
                                         className="px-6 py-3 rounded-lg border-2 border-red-500 text-lg font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 bg-black text-red-500 hover:bg-red-500 hover:text-black"
+                                        aria-label="clear-search"
+                                        data-testid="clear-button"
                                     >
                                         Очистить
                                     </button>
@@ -497,6 +502,8 @@ export const CreateEditProject = () => {
                                             type="button"
                                             onClick={handleEdit}
                                             className="w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-yellow-400 text-xl font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 bg-black text-yellow-400 hover:bg-yellow-400 hover:text-black"
+                                            aria-label="edit-button"
+                                            data-testid="edit-button"
                                         >
                                             Редактировать
                                         </button>
