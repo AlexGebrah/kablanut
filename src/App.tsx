@@ -19,6 +19,7 @@ import ProjectFactCreate from "./components/dashboards/project/ProjectFactCreate
 import MaterialsActive from "./components/dashboards/materials/MaterialsActive.tsx";
 import ProblemsActive from "./components/dashboards/problems/ProblemsActive.tsx";
 import CreateEditUser from "./components/dashboards/create/CreateEditUser.tsx";
+import CreateEditProject from "./components/dashboards/create/CreateEditProject.tsx";
 
 
 export function App() {
@@ -36,6 +37,7 @@ export function App() {
                     <Route path="/dashboard/create/user" element={<CreateNewUser/>}/>
                     <Route path="/dashboard/create/user-edit" element={<CreateEditUser/>}/>
                     <Route path="/dashboard/create/project" element={<CreateNewProject/>}/>
+                    <Route path="/dashboard/create/project-edit" element={<CreateEditProject/>}/>
                     <Route path="/dashboard/project" element={<ProjectPlanFact/>}/>
                     <Route path="/dashboard/project/plan" element={<ProjectPlanCreate/>}/>
                     <Route path="/dashboard/project/fact" element={<ProjectFactCreate/>}/>
