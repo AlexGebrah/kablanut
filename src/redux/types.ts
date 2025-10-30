@@ -1,5 +1,4 @@
 // Types for our Redux state
-import type { UserType } from '../components/typesComponents/UserType'
 import type { ProjectType } from '../components/typesComponents/ProjectType'
 import type { MaterialsType } from '../components/typesComponents/MaterialsType'
 import type { AlarmType } from '../components/typesComponents/AlarmType'
@@ -17,14 +16,20 @@ export interface AuthState {
     error: string | null
 }
 export interface AuthCreateUserState {
-    loading: boolean
-    error: string | null
-    searchedUser: UserType | null
-    searchLoading: boolean
-    searchError: string | null
+    data: null,
+    loading: false,
+    error: null,
+    searchedUser: null,
+    searchLoading: false,
+    searchError: null,
 }
 export interface CreateProjectState {
     form: ProjectType
+    loading: boolean
+    error: string | null
+    searchedProject: ProjectType | null
+    searchLoading: boolean
+    searchError: string | null
 }
 export interface MaterialsRequestState {
     form: MaterialsType
