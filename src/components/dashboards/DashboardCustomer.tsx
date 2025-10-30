@@ -52,7 +52,7 @@ export const DashboardCustomer = () => {
                                 className="w-full py-3.5 sm:py-4 rounded-lg border-2 border-yellow-400 text-yellow-400 bg-black text-2xl sm:text-[1.6875rem] font-bold
                                            hover:bg-yellow-400 hover:text-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
                             >
-                                Проект
+                                Проект План / Факт
                             </button>
                             <button
                                 type="button"
