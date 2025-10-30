@@ -25,7 +25,7 @@ export const Create = () => {
               onClick={handleLogout}
               className="bg-yellow-400 text-black px-3 sm:px-4 py-1 sm:py-2 rounded-lg text-[1.3125rem] sm:text-2xl font-medium hover:bg-yellow-300"
             >
-              Выйти
+              Назад
             </button>
           </div>
         </div>
